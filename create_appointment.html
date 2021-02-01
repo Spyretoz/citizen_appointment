@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="Appointment">
+	<title>Make a Date</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+	<h1>Create an appointment</h1>
+
+	
+
+	<div class="appForm">
+		<h1>Appointment Form</h1>
+		<form action="appointment" method="POST">
+
+			<h5><input type="time" name="app_time" required></h5>
+			<h5><input type="date" name="app_date" required></h5>
+			<h5><input type="text" name="app_carrier" placeholder="Όνομα φορέα" required></h5>
+			<h5><input type="text" name="app_extraINFO" placeholder="Επιπλέον πληροφορίες (Optional)" required></h5>
+
+			<input type="submit" class="button" value="Δημιουργία">
+			<br><br>
+			<a href="/appoin-list" value="Show My Appointments">Show My Appointments</a>
+			<br><br>
+			<a href="/updata" value="Show My Appointments">Additional Personal Info</a>
+			
+		</form>
+	</div>
+	
+</body>
+</html>

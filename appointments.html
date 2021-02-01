@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<meta charset="utf-8">
+		<title>Your appointments</title>
+
+		<link rel="stylesheet" type="text/css" href="Appointment">
+	</head>
+	<body>
+
+		<h1>Accepted appointments</h1>
+		
+		<table id="tablo" style="display:none">
+			<tr>
+				<th><h3>ID</h3></th>
+				<th><h3>Time</h3></th>
+				<th><h3>Date</h3></th>
+				<th><h3>Carrier's Name</h3></th>
+				<th><h3>Additional Info (Optional)</h3></th>
+			</tr>
+			
+		</table>
+
+
+
+		<br>
+		<div class="mylink">
+			<h3><a href="/newappoint">Create a new appointment</a></h3>
+		</div>
+		
+
+		<script type="text/javascript">
+			const table = document.getElementById("tablo");
+
+
+			var settings = {
+				"url": "http://localhost:8081/appointments",
+				"method": "GET",
+				"timeout": 0,
+			};
+
+			$.ajax(settings).done(function (response) 
+			{
+				console.log(response);
+				// alert(response);
+
+				// var txt = JSON.stringify(response);
+				// alert(txt);
+				// var obj = JSON.parse(txt);
+				// alert(obj);
+				if (response.length > 0) 
+				{
+					table.style.display = "block";
+
+					for(var i = 0; i < response.length; i++)
+					{
+						var row = table.insertRow(1);
+
+						var txt = JSON.stringify(response[i]);
+						var obj = JSON.parse(txt);
+				
+						row.insertCell(0).innerHTML = obj.app_id;
+						row.insertCell(1).innerHTML = obj.app_time;
+						row.insertCell(2).innerHTML = obj.app_date;
+						row.insertCell(3).innerHTML = obj.app_carrier;
+						row.insertCell(4).innerHTML = obj.app_extraINFO;
+					}
+				}
+				else
+				{
+					alert("You have no accepted appointments");
+				}
+				
+			});
+
+		</script>
+	</body>
+</html>
