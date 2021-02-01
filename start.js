@@ -34,19 +34,42 @@ app.get('/register', function(request, response)
 	response.sendFile(path.join(__dirname + '/signup.html'));
 });
 
+
+
 app.get('/appoin-list', function(request, response) 
 {
-	response.sendFile(path.join(__dirname + '/appointments.html'));
+	if (request.session.loggedin) 
+	{
+		response.sendFile(path.join(__dirname + '/appointments.html'));
+	}
+	else
+	{
+		response.send('Please login to view this page!');
+	}
 });
 
 app.get('/newappoint', function(request, response) 
 {
-	response.sendFile(path.join(__dirname + '/create_appointment.html'));
+	if (request.session.loggedin) 
+	{
+		response.sendFile(path.join(__dirname + '/create_appointment.html'));
+	}
+	else
+	{
+		response.send('Please login to view this page!');
+	}
 });
 
 app.get('/updata', function(request, response) 
 {
-	response.sendFile(path.join(__dirname + '/add_data.html'));
+	if (request.session.loggedin) 
+	{
+		response.sendFile(path.join(__dirname + '/add_data.html'));
+	}
+	else
+	{
+		response.send('Please login to view this page!');
+	}
 });
 
 app.get('/Appointment', function (req, res) 
