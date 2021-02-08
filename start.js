@@ -77,20 +77,33 @@ app.get('/Appointment', function (req, res)
     res.sendFile(path.resolve("Appointment.css"));
 });
 
-// $2y$12$VeL65aPUkDKrlSyTXRlRsuyXmgruGWd9cDvjQ9tlUpqS3tC9hfDty
+
 app.post('/auth', function(request, response) 
 {
 	var username = request.body.username;
 	var password = request.body.password;
+	
 	if (username && password) 
 	{
-		connection.query('SELECT * FROM citizen WHERE cit_username = ? AND cit_password = ?', [username, password], function(error, results, fields) 
+		connection.query('SELECT cit_password FROM citizen WHERE cit_username = ?', [username], function(error, results, fields)
+		// connection.query('SELECT * FROM citizen WHERE cit_username = ? AND cit_password = ?', [username, password], function(error, results, fields) 
 		{
-			if (results.length > 0) 
+	 		if (results.length > 0)
 			{
-				request.session.loggedin = true;
-				request.session.username = username;
-				response.redirect('/newappoint');
+				var txt = JSON.stringify(results[0]);
+				var obj = JSON.parse(txt);
+
+				var result = bcrypt.compareSync(password, obj.cit_password);
+				if (result)
+				{
+					request.session.loggedin = true;
+					request.session.username = username;
+					response.redirect('/newappoint');
+				}
+				else
+				{
+					response.send("Incorrect Username and/or Password!");
+				}
 			} 
 			else 
 			{
