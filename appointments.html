@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<meta charset="utf-8">
+		<meta charset="UTF-8">
 		<title>Your appointments</title>
 
 		<link rel="stylesheet" type="text/css" href="Appointment">
@@ -62,7 +62,9 @@
 				
 						row.insertCell(0).innerHTML = obj.app_id;
 						row.insertCell(1).innerHTML = obj.app_time;
-						row.insertCell(2).innerHTML = obj.app_date;
+
+						var mydate = new Date(obj.app_date);
+						row.insertCell(2).innerHTML = mydate.toDateString();
 						row.insertCell(3).innerHTML = obj.app_carrier;
 						row.insertCell(4).innerHTML = obj.app_extraINFO;
 					}

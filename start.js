@@ -26,12 +26,26 @@ app.use(bodyParser.json());
 
 app.get('/', function(request, response) 
 {
-	response.sendFile(path.join(__dirname + '/login.html'));
+	if (request.session.loggedin) 
+	{
+		response.redirect('/newappoint');
+	}
+	else
+	{
+		response.sendFile(path.join(__dirname + '/login.html'));
+	}
 });
 
 app.get('/register', function(request, response) 
 {
-	response.sendFile(path.join(__dirname + '/signup.html'));
+	if (request.session.loggedin) 
+	{
+		response.redirect('/newappoint');
+	}
+	else
+	{
+		response.sendFile(path.join(__dirname + '/signup.html'));
+	}
 });
 
 
@@ -86,7 +100,6 @@ app.post('/auth', function(request, response)
 	if (username && password) 
 	{
 		connection.query('SELECT cit_password FROM citizen WHERE cit_username = ?', [username], function(error, results, fields)
-		// connection.query('SELECT * FROM citizen WHERE cit_username = ? AND cit_password = ?', [username, password], function(error, results, fields) 
 		{
 	 		if (results.length > 0)
 			{
@@ -120,7 +133,6 @@ app.post('/auth', function(request, response)
 });
 
 
-
 // Insert a citizen
 app.post('/register', function (req, res)
 {
@@ -150,13 +162,32 @@ app.post('/register', function (req, res)
 });
 
 
-app.get('/appointments', function(request, response) 
+app.get('/show_carriers', function(request, response)
 {
-	var username = request.session.username;
-
-	console.log(username);
 	if (request.session.loggedin) 
 	{
+		connection.query("SELECT car_name FROM carrier;", function(error, results, fields) 
+		{
+			if (error) throw error;
+			console.log(results);
+   			response.send(results);       
+		});
+	}
+	else 
+	{
+		response.send('Please login to view this page!');
+	}
+});
+
+
+app.get('/appointments', function(request, response) 
+{
+	
+	if (request.session.loggedin) 
+	{
+		var username = request.session.username;
+		console.log(username);
+
 		connection.query("SELECT * FROM appointment WHERE app_citizen = '" + username + "' AND `accepted`=1;", function(error, results, fields) 
 		{
 			if (error) throw error;
