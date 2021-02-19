@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<meta charset="UTF-8">
+		<title>Personal Info</title>
+
+		<link rel="stylesheet" type="text/css" href="Appointment">
+	</head>
+	<body>
+
+		<h1>Personal Info</h1>
+		
+		<table id="tablo" style="display:none">
+			<tr>
+				<th><h3>Τηλέφωνο</h3></th>
+				<th><h3>Ημ/νία Γέννησης</h3></th>
+				<th><h3>ΑΦΜ</h3></th>
+				<th><h3>ΑΜΚΑ</h3></th>
+				<th><h3>Περιοχη</h3></th>
+				<th><h3>Πόλη</h3></th>
+			</tr>
+			
+		</table>
+
+
+
+		<br>
+		<div class="mylink">
+			<h3><a href="/newappoint">Return to Appointment</a></h3>
+		</div>
+		
+
+		<script type="text/javascript">
+			const table = document.getElementById("tablo");
+
+
+			var settings = {
+				"url": "http://localhost:8081/show_personal",
+				"method": "GET",
+				"timeout": 0,
+			};
+
+			$.ajax(settings).done(function (response) 
+			{
+
+				if (response.length > 0) 
+				{
+				 	table.style.display = "block";
+
+				 	for(var i = 0; i < response.length; i++)
+				 	{
+				 		var row = table.insertRow(1);
+
+				 		var txt = JSON.stringify(response[i]);
+				 		var obj = JSON.parse(txt);
+				
+				 		row.insertCell(0).innerHTML = obj.phoneNumber;
+				 		var mydate = new Date(obj.birthDate);
+				 		row.insertCell(1).innerHTML = mydate.toDateString();
+
+				 		row.insertCell(2).innerHTML = obj.afm;
+				 		row.insertCell(3).innerHTML = obj.amka;
+				 		row.insertCell(4).innerHTML = obj.county;
+				 		row.insertCell(4).innerHTML = obj.city;
+				 	}
+				}
+				else
+				{
+					alert("You have no accepted appointments");
+				}
+				
+			});
+
+		</script>
+	</body>
+</html>

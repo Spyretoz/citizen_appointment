@@ -86,6 +86,19 @@ app.get('/updata', function(request, response)
 	}
 });
 
+app.get('/showinfo', function(request, response) 
+{
+	if (request.session.loggedin) 
+	{
+		response.sendFile(path.join(__dirname + '/show_personal_info.html'));
+	}
+	else
+	{
+		response.send('Please login to view this page!');
+	}
+});
+
+
 app.get('/Appointment', function (req, res) 
 {
     res.sendFile(path.resolve("Appointment.css"));
@@ -218,7 +231,7 @@ app.post('/appointment', function(req, res)
         	{
             	resultJson = JSON.stringify([{'ADD':'SUCCESS'}]);
             	console.log(req.body);
-            	res.redirect('/appoin-list');
+            	res.redirect('/newappoint');
         	}
         	else
         	{
@@ -237,10 +250,10 @@ app.post('/appointment', function(req, res)
 
 app.post('/update', function(req, res) 
 {
-	var username = req.session.username;
-	console.log(username);
 	if (req.session.loggedin) 
 	{
+		var username = req.session.username;
+		console.log(username);
     	var sql = "UPDATE citizen SET phoneNumber = '" + req.body.phoneNumber + "', birthDate = '" + req.body.birthDate + "', afm = '" + req.body.AFM + "', amka = '" + req.body.AMKA + "', county = '" + req.body.county + "', city = '" + req.body.city + "' WHERE cit_username = '" + username + "';";
     	console.log(sql);
 
@@ -261,6 +274,24 @@ app.post('/update', function(req, res)
         	res.end(resultJson);
     	});
 	} 
+	else 
+	{
+		response.send('Please login to view this page!');
+	}
+});
+
+app.get('/show_personal', function(request, response)
+{
+	var username = request.session.username;
+	if (request.session.loggedin) 
+	{
+		connection.query("SELECT * FROM citizen WHERE cit_username ='" + username + "';", function(error, results, fields) 
+		{
+			if (error) throw error;
+			console.log(results);
+   			response.send(results);       
+		});
+	}
 	else 
 	{
 		response.send('Please login to view this page!');
