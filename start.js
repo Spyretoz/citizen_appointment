@@ -264,7 +264,7 @@ app.post('/update', function(req, res)
         	{
             	resultJson = JSON.stringify([{'ADD':'SUCCESS'}]);
             	console.log(req.body);
-            	res.redirect('/appoin-list');
+            	res.redirect('/showinfo');
         	}
         	else
         	{
